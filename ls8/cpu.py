@@ -111,28 +111,20 @@ class CPU:
         self.pc += 2
 
     def handle_PUSH(self):
-        ir = self.ram_read(self.pc)
-        val = ir
-        op_count = val >> 6  # use bitwise operators to figure out length of op count
-        ir_len = 1 + op_count
         self.reg[7] -= 1
         reg_num = self.ram_read(self.pc+1)
         val = self.reg[reg_num]
         stack_pointer = self.reg[7]
         self.ram[stack_pointer] = val
-        self.pc += ir_len
+        self.pc += 2
 
     def handle_POP(self):
-        ir = self.ram_read(self.pc)
-        val = ir
-        op_count = val >> 6  # use bitwise operators to figure out length of op count
-        ir_len = 1 + op_count
         stack_pointer = self.reg[7]
         reg_num = self.ram_read(self.pc+1)
         val = self.ram[stack_pointer]
         self.reg[reg_num] = val
         self.reg[7] += 1
-        self.pc += ir_len
+        self.pc += 2
 
     def trace(self):
         """
